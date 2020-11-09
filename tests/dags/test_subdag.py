@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # Licensed to the Apache Software Foundation (ASF) under one
 # or more contributor license agreements.  See the NOTICE file
@@ -24,7 +23,7 @@ A DAG with subdag for testing purpose.
 
 from datetime import datetime, timedelta
 
-from airflow.models import DAG
+from airflow.models.dag import DAG
 from airflow.operators.dummy_operator import DummyOperator
 from airflow.operators.subdag_operator import SubDagOperator
 
@@ -42,14 +41,14 @@ def subdag(parent_dag_name, child_dag_name, args):
     Create a subdag.
     """
     dag_subdag = DAG(
-        dag_id='%s.%s' % (parent_dag_name, child_dag_name),
+        dag_id=f'{parent_dag_name}.{child_dag_name}',
         default_args=args,
         schedule_interval="@daily",
     )
 
     for i in range(2):
         DummyOperator(
-            task_id='%s-task-%s' % (child_dag_name, i + 1),
+            task_id='{}-task-{}'.format(child_dag_name, i + 1),
             default_args=args,
             dag=dag_subdag,
         )

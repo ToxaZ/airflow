@@ -29,7 +29,7 @@ from alembic import op
 
 # revision identifiers, used by Alembic.
 revision = '004c1210f153'
-down_revision = '74effc47d867'
+down_revision = '939bb1e647c8'
 branch_labels = None
 depends_on = None
 
@@ -45,9 +45,7 @@ def upgrade():
 
 
 def downgrade():
-    """
-    Revert column size from 256 to 50 characters, might result in data loss.
-    """
+    """Revert column size from 256 to 50 characters, might result in data loss."""
     # use batch_alter_table to support SQLite workaround
     with op.batch_alter_table('task_instance') as batch_op:
         batch_op.alter_column('queue', type_=sa.String(50))

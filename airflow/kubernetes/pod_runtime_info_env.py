@@ -14,13 +14,10 @@
 # KIND, either express or implied.  See the License for the
 # specific language governing permissions and limitations
 # under the License.
-"""
-Classes for interacting with Kubernetes API
-"""
-
+"""Classes for interacting with Kubernetes API"""
 import copy
 
-import kubernetes.client.models as k8s
+from kubernetes.client import models as k8s
 
 from airflow.kubernetes.k8s_model import K8SModel
 
@@ -42,16 +39,10 @@ class PodRuntimeInfoEnv(K8SModel):
         self.field_path = field_path
 
     def to_k8s_client_obj(self) -> k8s.V1EnvVar:
-        """
-        :return: kubernetes.client.models.V1EnvVar
-        """
+        """:return: kubernetes.client.models.V1EnvVar"""
         return k8s.V1EnvVar(
             name=self.name,
-            value_from=k8s.V1EnvVarSource(
-                field_ref=k8s.V1ObjectFieldSelector(
-                    self.field_path
-                )
-            )
+            value_from=k8s.V1EnvVarSource(field_ref=k8s.V1ObjectFieldSelector(field_path=self.field_path)),
         )
 
     def attach_to_pod(self, pod: k8s.V1Pod) -> k8s.V1Pod:
